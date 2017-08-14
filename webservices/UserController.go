@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"go-rest-api/dao"
 	"go-rest-api/exceptions"
+	"go-rest-api/middlewares"
 	"go-rest-api/models"
 	"go-rest-api/services"
 	"go-rest-api/utils"
@@ -31,11 +32,13 @@ func RounterConfig() {
 		v1.POST("/signup", signUp)
 		v1.POST("/signIn", signIn)
 	}
+	router.Use(middlewares.APIInterceptor())
 	router.Run()
 }
 
 func signUp(c *gin.Context) {
 	log.Println("<-----------Sign up function called---------------> ")
+	log.Println("API Path:\t", c.Request.URL)
 	payload, _ := ioutil.ReadAll(c.Request.Body)
 	var requestObject models.UserModel
 	err := json.Unmarshal(payload, &requestObject)
@@ -49,6 +52,7 @@ func signUp(c *gin.Context) {
 
 func signIn(c *gin.Context) {
 	log.Println("<--------------signIn webservice-------------->")
+	log.Println("API Path:\t", c.Request.URL)
 	payload, _ := ioutil.ReadAll(c.Request.Body)
 	var requestObject models.UserModel
 	err := json.Unmarshal(payload, &requestObject)
@@ -70,5 +74,4 @@ func signIn(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, gin.H{"status": http.StatusCreated, "message": "User login successfully!", "object": userModel})
 	}
-
 }
