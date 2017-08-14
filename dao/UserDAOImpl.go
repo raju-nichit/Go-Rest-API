@@ -42,3 +42,13 @@ func (UDao *UserDAOImpl) UpdateAuthToken(userDTO dtos.UserDTO, authToken string)
 	}
 	return err
 }
+
+func (UDao *UserDAOImpl) GetUserByAuthToken(authToken string) (dtos.UserDTO, error) {
+	userDTO := dtos.UserDTO{AuthToken: authToken}
+	err := config.DB.Find(&userDTO).Error
+	if err != nil {
+		log.Println("error inside GetUserByAuthToken DAO")
+		log.Fatalln(err)
+	}
+	return userDTO, err
+}

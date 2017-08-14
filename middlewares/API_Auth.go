@@ -1,9 +1,14 @@
 package middlewares
 
 import (
+	"go-rest-api/dao"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+)
+
+var (
+	UserDao dao.UserDAO = &dao.UserDAOImpl{}
 )
 
 func APIInterceptor() gin.HandlerFunc {
@@ -14,9 +19,18 @@ func APIInterceptor() gin.HandlerFunc {
 				c.AbortWithStatus(401)
 				return
 			}
+			_, err := UserDao.GetUserByAuthToken(authToken)
+			if err != nil {
+				c.AbortWithStatus(401)
+				return
+			} else {
+				// println(userDTO)
+				println("Url intercept successfully")
+				c.Next()
+				return
+			}
 			//inctercept url using db
 		}
-		c.Next()
-		return
+
 	}
 }
