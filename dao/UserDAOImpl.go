@@ -38,17 +38,31 @@ func (UDao *UserDAOImpl) UpdateAuthToken(userDTO dtos.UserDTO, authToken string)
 	err := config.DB.Table("user_dtos").Where("user_id = ?", userDTO.UserId).Update("auth_token", authToken).Error
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Error(err)
 	}
 	return err
 }
 
 func (UDao *UserDAOImpl) GetUserByAuthToken(authToken string) (dtos.UserDTO, error) {
+
+	log.Info("<---------------GetUserByAuthToken DAO--------------->")
+	println("DAO auth token", authToken)
 	userDTO := dtos.UserDTO{AuthToken: authToken}
-	err := config.DB.Find(&userDTO).Error
+	err := config.DB.Where(&userDTO).First(&userDTO).Error
 	if err != nil {
 		log.Println("error inside GetUserByAuthToken DAO")
-		log.Fatalln(err)
+		log.Error(err)
+		return userDTO, err
 	}
+	println("User id", userDTO.UserId)
 	return userDTO, err
+}
+
+func (UDao *UserDAOImpl) SignOut(authToken string) error {
+	err := config.DB.Table("user_dtos").Where("auth_token = ?", authToken).
+		Update("auth_token", nil).Error
+	if err != nil {
+		log.Error(err)
+	}
+	return err
 }

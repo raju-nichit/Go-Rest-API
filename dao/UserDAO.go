@@ -9,4 +9,5 @@ type UserDAO interface {
 	GetUserByEmail(email string) (dtos.UserDTO, error)
 	UpdateAuthToken(userDTO dtos.UserDTO, authToken string) error
 	GetUserByAuthToken(authToken string) (dtos.UserDTO, error)
+	SignOut(authToken string) error
 }

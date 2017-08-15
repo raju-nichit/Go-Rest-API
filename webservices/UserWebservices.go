@@ -2,16 +2,18 @@ package webservices
 
 import (
 	//	_ "Common-Utility/template"
+
+	"Go-Rest-API/middlewares"
 	"encoding/json"
 	"go-rest-api/dao"
 	"go-rest-api/exceptions"
-	"go-rest-api/middlewares"
 	"go-rest-api/models"
 	"go-rest-api/services"
 	"go-rest-api/utils"
 	"io/ioutil"
-	"log"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,13 +29,14 @@ type UserController struct {
 
 func RounterConfig() {
 	router := gin.Default()
-	v1 := router.Group("go-rest-api/api/v1/user")
+	router.Use(middlewares.AuthMiddleware())
+	apiv1 := router.Group("go-rest-api/api/v1/user")
 	{
-		v1.POST("/signup", signUp)
-		v1.POST("/signIn", signIn)
+		apiv1.POST("/signup", signUp)
+		apiv1.POST("/signIn", signIn)
+		apiv1.GET("/signOut", SignOut)
 	}
-	router.Use(middlewares.APIInterceptor())
-	router.Run()
+	router.Run(":80")
 }
 
 func signUp(c *gin.Context) {
@@ -50,6 +53,11 @@ func signUp(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Todo item created successfully!", "resourceId": UModel})
 }
 
+/**********************
+*
+	@@@SignIn API @@@@
+
+***/
 func signIn(c *gin.Context) {
 	log.Println("<--------------signIn webservice-------------->")
 	log.Println("API Path:\t", c.Request.URL)
@@ -72,6 +80,18 @@ func signIn(c *gin.Context) {
 			return
 		}
 	} else {
-		c.JSON(http.StatusOK, gin.H{"status": http.StatusCreated, "message": "User login successfully!", "object": userModel})
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "User login successfully!", "object": userModel})
 	}
+}
+
+/**********************
+*
+*	@@@SignIn Out API  @@@@
+*
+***/
+
+func SignOut(c *gin.Context) {
+	log.Info("<------------SignOut Webservice--------------->")
+	UserService.SignOut(c.Request.Header.Get("authToken"))
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "User SingOut successfully!"})
 }
