@@ -21,6 +21,12 @@ var (
 type UserServiceImpl struct {
 }
 
+/***************************
+*
+*@@@@SignUp API @@@@
+*
+*
+************************/
 func (UService *UserServiceImpl) SignUp(userModel *models.UserModel) (*models.UserModel, error) {
 	var err error
 	log.Println("<-----------------Inside SaveUserInfo controller------------->")
@@ -48,6 +54,13 @@ func (UService *UserServiceImpl) SignUp(userModel *models.UserModel) (*models.Us
 		return nil, err
 	}
 }
+
+/***************************
+*
+*@@@@SignIn API @@@@
+*
+*
+************************/
 func (UService *UserServiceImpl) SignIn(userModel *models.UserModel) (*dtos.UserDTO, error) {
 	log.Println("<-----------GetUserByEmail Service------------->")
 	userDTO, err := UserDao.GetUserByEmail(userModel.GetEmail())
@@ -64,4 +77,20 @@ func (UService *UserServiceImpl) SignIn(userModel *models.UserModel) (*dtos.User
 		err = exceptions.UserServiceException("Invalid password.")
 		return nil, err
 	}
+}
+
+/***************************
+*
+*@@@@SignOut API @@@@
+*
+*
+************************/
+func (UService *UserServiceImpl) SignOut(authToken string) error {
+	log.Info("<----------SignOut service------------->")
+	err := UserDao.SignOut(authToken)
+	if err != nil {
+		log.Error("@@@Error in Signout service@@@")
+		log.Error(err)
+	}
+	return err
 }
