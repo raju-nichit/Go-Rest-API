@@ -3,9 +3,7 @@ package webservices
 import (
 	//	_ "Common-Utility/template"
 
-	"Go-Rest-API/middlewares"
 	"encoding/json"
-	"go-rest-api/dao"
 	"go-rest-api/exceptions"
 	"go-rest-api/models"
 	"go-rest-api/services"
@@ -18,28 +16,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type UserWevService struct {
+}
+
 var (
 	UserService    service.UserService = &service.UserServiceImpl{}
-	UserDao        dao.UserDAO         = &dao.UserDAOImpl{}
 	tokenGenerator utils.TokenGenerator
 )
 
-type UserController struct {
-}
-
-func RounterConfig() {
-	router := gin.Default()
-	router.Use(middlewares.AuthMiddleware())
-	apiv1 := router.Group("go-rest-api/api/v1/user")
-	{
-		apiv1.POST("/signup", signUp)
-		apiv1.POST("/signIn", signIn)
-		apiv1.GET("/signOut", SignOut)
-	}
-	router.Run(":80")
-}
-
-func signUp(c *gin.Context) {
+func (userWevService *UserWevService) SignUp(c *gin.Context) {
 	log.Println("<-----------Sign up function called---------------> ")
 	log.Println("API Path:\t", c.Request.URL)
 	payload, _ := ioutil.ReadAll(c.Request.Body)
@@ -58,7 +43,7 @@ func signUp(c *gin.Context) {
 	@@@SignIn API @@@@
 
 ***/
-func signIn(c *gin.Context) {
+func (userWevService *UserWevService) SignIn(c *gin.Context) {
 	log.Println("<--------------signIn webservice-------------->")
 	log.Println("API Path:\t", c.Request.URL)
 	payload, _ := ioutil.ReadAll(c.Request.Body)
@@ -90,7 +75,7 @@ func signIn(c *gin.Context) {
 *
 ***/
 
-func SignOut(c *gin.Context) {
+func (userWevService *UserWevService) SignOut(c *gin.Context) {
 	log.Info("<------------SignOut Webservice--------------->")
 	UserService.SignOut(c.Request.Header.Get("authToken"))
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "User SingOut successfully!"})
