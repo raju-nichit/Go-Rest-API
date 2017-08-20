@@ -1,5 +1,6 @@
 package exceptions
 
+//ServiceError --
 type ServiceError struct {
 	Message string
 }

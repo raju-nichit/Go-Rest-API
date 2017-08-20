@@ -3,13 +3,16 @@ package utils
 import (
 	"crypto/sha1"
 	"encoding/base64"
+	//fmt --
 	_ "fmt"
 	"time"
 )
 
+//TokenGenerator -- genrate authToken
 type TokenGenerator struct {
 }
 
+//GenerateToken -- genrate authToken
 func (token TokenGenerator) GenerateToken(email string) string {
 	var authKey string
 	hash := sha1.New()

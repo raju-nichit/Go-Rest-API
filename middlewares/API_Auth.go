@@ -1,11 +1,11 @@
 package middlewares
 
 import (
-	"go-rest-api/dao"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/raju-nichit/Go-Rest-API/dao"
 )
 
 var (

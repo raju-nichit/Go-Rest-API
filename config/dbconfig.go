@@ -1,17 +1,19 @@
 package config
 
 import (
-	_ "database/sql"
-	"go-rest-api/dtos"
-
+	//mysql --
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"github.com/raju-nichit/Go-Rest-API/dtos"
+
 	"github.com/sirupsen/logrus"
 )
 
+//DB -- db connection object
 var DB *gorm.DB
 var logger = logrus.New()
 
+//DBConfig -- Database connection setup
 func DBConfig() {
 	var err error
 	logrus.Info("<--------Inside Database configuration-------------->")
@@ -20,5 +22,5 @@ func DBConfig() {
 		logger.Error(err)
 	}
 	logrus.Info("<--------Database configuration loaded-------------->")
-	DB.AutoMigrate(&dtos.UserDTO{})
+	DB.AutoMigrate(&dtos.User{})
 }

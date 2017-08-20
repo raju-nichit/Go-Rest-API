@@ -4,26 +4,29 @@ import (
 	//	_ "Common-Utility/template"
 
 	"encoding/json"
-	"go-rest-api/exceptions"
-	"go-rest-api/models"
-	"go-rest-api/services"
-	"go-rest-api/utils"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/raju-nichit/Go-Rest-API/exceptions"
+	"github.com/raju-nichit/Go-Rest-API/models"
+	service "github.com/raju-nichit/Go-Rest-API/services"
+	"github.com/raju-nichit/Go-Rest-API/utils"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )
 
+//UserWevService --
 type UserWevService struct {
 }
 
 var (
+	//UserService --
 	UserService    service.UserService = &service.UserServiceImpl{}
 	tokenGenerator utils.TokenGenerator
 )
 
+//SignUp --
 func (userWevService *UserWevService) SignUp(c *gin.Context) {
 	log.Println("<-----------Sign up function called---------------> ")
 	log.Println("API Path:\t", c.Request.URL)
@@ -38,11 +41,7 @@ func (userWevService *UserWevService) SignUp(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Todo item created successfully!", "resourceId": UModel})
 }
 
-/**********************
-*
-	@@@SignIn API @@@@
-
-***/
+// SignIn --
 func (userWevService *UserWevService) SignIn(c *gin.Context) {
 	log.Println("<--------------signIn webservice-------------->")
 	log.Println("API Path:\t", c.Request.URL)
@@ -69,12 +68,11 @@ func (userWevService *UserWevService) SignIn(c *gin.Context) {
 	}
 }
 
-/**********************
+/*SignOut -- *********************
 *
 *	@@@SignIn Out API  @@@@
 *
 ***/
-
 func (userWevService *UserWevService) SignOut(c *gin.Context) {
 	log.Info("<------------SignOut Webservice--------------->")
 	UserService.SignOut(c.Request.Header.Get("authToken"))

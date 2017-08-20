@@ -1,6 +1,7 @@
 package server
 
+//Init -- server setting
 func Init() {
 	r := NewRouter()
-	r.Run(":80")
+	r.Run(":8090")
 }

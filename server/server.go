@@ -1,12 +1,12 @@
 package server
 
 import (
-	"Go-Rest-API/middlewares"
-	"go-rest-api/webservices"
-
 	"github.com/gin-gonic/gin"
+	"github.com/raju-nichit/Go-Rest-API/middlewares"
+	"github.com/raju-nichit/Go-Rest-API/webservices"
 )
 
+//NewRouter --
 func NewRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())

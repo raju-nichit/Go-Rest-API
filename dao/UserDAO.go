@@ -1,13 +1,12 @@
 package dao
 
-import (
-	"go-rest-api/dtos"
-)
+import "github.com/raju-nichit/Go-Rest-API/dtos"
 
+//UserDAO -- interface for user operations
 type UserDAO interface {
-	SaveUser(dtos.UserDTO) (dtos.UserDTO, error)
-	GetUserByEmail(email string) (dtos.UserDTO, error)
-	UpdateAuthToken(userDTO dtos.UserDTO, authToken string) error
-	GetUserByAuthToken(authToken string) (dtos.UserDTO, error)
+	SaveUser(dtos.User) (dtos.User, error)
+	GetUserByEmail(email string) (dtos.User, error)
+	UpdateAuthToken(userDTO dtos.User, authToken string) error
+	GetUserByAuthToken(authToken string) (dtos.User, error)
 	SignOut(authToken string) error
 }

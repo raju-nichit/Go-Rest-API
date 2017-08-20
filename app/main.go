@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Go-Rest-API/server"
-	"go-rest-api/config"
+	"github.com/raju-nichit/Go-Rest-API/config"
+	"github.com/raju-nichit/Go-Rest-API/server"
 )
 
 func main() {

@@ -8,6 +8,7 @@ func (e errorMsg) Error() string {
 	return e.s
 }
 
+//UserServiceException --
 func UserServiceException(text string) error {
 	return errorMsg{text}
 }
